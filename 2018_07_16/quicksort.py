@@ -3,16 +3,20 @@ import random
 
 
 def get_random_pivot(lst, begin, end):
+    """Default pivot selection strategy"""
     return random.randrange(begin, end)
 
 
 def quicksort(lst, choose_pivot=get_random_pivot):
-    """Wrapper around quicksort_recur
+    """Wrapper around quicksort_recur.
+
 
     lst: The list to be sorted in place
-    choose_pivot: The function used to choose the pivot element.  Takes
-        three arguments corresponding to lst, first index in lst
-        (i.e., 0 initally), and len(list), respectively
+    choose_pivot: The function used to choose the pivot element. Takes
+        three arguments: lst, begin, end
+
+    Returns the total number of comparisons required to sort the list,
+    not including comparisons made within the choose_pivot function
     """
     return quicksort_recur(lst, 0, len(lst), choose_pivot)
 
@@ -59,44 +63,29 @@ def quicksort_recur(lst, begin, end, choose_pivot):
     return comparisons
 
 
-def median_of_three_old(lst, begin, end):
-    """Strategy for selecting pivot index OLD
+def median_of_three(lst, begin, end):
+    """Alternate strategy for selecting pivot index
 
     The index of the median element among the first, last,
     and middle elements in the lst segment is returned
     """
-    print("Input array: {}".format(lst[begin: end]))
-    print("Full array: {}".format(lst))
     first = lst[begin]
     final = lst[end - 1]
-    print("middle = lst((end - begin) // 2) + begin]: {} = lst[{}]".format(lst[((end - begin) // 2) + begin - 1], ((end - begin) // 2) + begin - 1))
-    middle = lst[((end - begin) // 2) + begin - 1]
-    print([first, final, middle])
-    print(sorted([first, final, middle]))
+    middle = lst[(((end - begin) - 1) // 2) + begin]
     if first <= middle <= final or final <= middle <= first:
-        return ((end - begin) - 1) // 2
+        return (((end - begin) - 1) // 2) + begin
     elif middle <= first <= final or final <= first <= middle:
         return begin
     else:
         return end - 1
 
 
-def median_of_three(lst, left, right):
-    """Requires that all elements in lst be distinct"""
-    d = {
-        lst[left]: left,
-        lst[(((right - left) - 1) // 2) + left]: (((right - left) - 1) // 2) + left,
-        lst[right - 1]: right - 1
-    }
-    # print(d)
-    three = [key for key in d]
-    three.sort()
-    # print(three)
-    # print("Input array: {} left: {} right: {} middle: {} median: {}".format(lst[left:right], lst[left], lst[right - 1], lst[(((right - left) - 1) // 2) + left], three[1]))
-    return d[three[1]]
-
-
 def main():
+    """Test driver: sort 10,000 unique integers and print
+    number of comparisons required using four different
+    pivot selection strategies
+    """
+
     with open("input.txt", "r", encoding="UTF-8") as file:
         lst = [int(line) for line in file.readlines()]
 
