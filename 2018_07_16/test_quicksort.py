@@ -8,15 +8,26 @@ from quicksort import quicksort
 class TestQuicksort(unittest.TestCase):
 
     def TestBaseCases(self):
-        self.assertEqual(quicksort([1]), [1])
-        self.assertEqual(quicksort([]), [])
+        lst = [1]
+        quicksort(lst)
+        self.assertEqual(lst, [1])
+        lst = []
+        quicksort(lst)
+        self.assertEqual(lst, [])
 
     def TestSortSmall(self):
-        self.assertEqual(quicksort([1, 2, 3]), [1, 2, 3])
-        self.assertEqual(quicksort([9, 8, 7]), [7, 8, 9])
-        self.assertEqual(quicksort([6, 4, 5]), [4, 5, 6])
+        lst = [1, 2, 3]
+        quicksort(lst)
+        self.assertEqual(lst, [1, 2, 3])
+        lst = [9, 8, 7]
+        quicksort(lst)
+        self.assertEqual(lst, [7, 8, 9])
+        lst = [6, 4, 5]
+        quicksort(lst)
+        self.assertEqual(lst, [4, 5, 6])
 
     def TestSortLarge(self):
-        lst = [random.randrange(0, 100) for i in range(0, 200)]
+        lst = [random.randrange(0, 100000) for i in range(0, 200000)]
         lst_copy = copy.deepcopy(lst)
-        self.assertEqual(quicksort(lst), sorted(lst_copy))
+        quicksort(lst)
+        self.assertEqual(lst, sorted(lst_copy))
