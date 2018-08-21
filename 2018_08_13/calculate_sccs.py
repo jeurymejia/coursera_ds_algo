@@ -66,30 +66,9 @@ def kosaraju(graph):
             graph[node] = edge_heads[edge_heads.index(None)+1:]
 
     def dfs_loop(graph, ordered_nodes):
-        # def dfs(graph, node):
-        #     nonlocal finishing_times
-        #     nonlocal visited
-        #     nonlocal sccs
-        #     nonlocal t
-        #     visited[node] = True
-        #     for neighbor_node in graph[node]:
-        #         # print("In dfs - Value of visited: {}".format(visited))
-        #         # print("In dfs - Value of neighbor nodes: {}".format(graph[node]))
-        #         if not visited[neighbor_node]:
-        #             # print("{} has not been visited".format(neighbor_node))
-        #             visited[neighbor_node] = True
-        #             dfs(graph, neighbor_node)
-        #     # print("Value of node: {}".format(node))
-        #     # print(finishing_times)
-        #     finishing_times[t] = node
-        #     t += 1
-        #     sccs[s] += 1
 
         def dfs_inorder_iter(graph, start_node):
             """Do iterative *in-order* DFS traversal of graph"""
-            nonlocal finishing_times
-            nonlocal visited
-            nonlocal sccs
             nonlocal t
 
             if visited[start_node]:
@@ -101,7 +80,6 @@ def kosaraju(graph):
             nodes_in_stack = set(stack)
 
             while stack:
-                # print("stack: {}".format(stack))
                 node = stack.pop()
                 nodes_in_stack.remove(node)
                 if not seen_once.get(node):
@@ -119,16 +97,7 @@ def kosaraju(graph):
                 else:
                     # We're backtracking
                     visited[node] = True
-                    # print("node: {}".format(node))
-                    # print(finishing_times)
-                    try:
-                        finishing_times[t] = node
-                    except IndexError:
-                        print("Value of node: {}".format(node))
-                        print("IndexError: {}".format(finishing_times))
-                        print("Stack: {}".format(stack))
-                        print("len(finishing_times): {} | len(stack): {}".format(len(finishing_times), len(stack)))
-                        raise
+                    finishing_times[t] = node
                     t += 1
                     sccs[s] += 1
 
@@ -139,26 +108,15 @@ def kosaraju(graph):
 
         t = 0  # Finishing time
         s = None  # Leader node
-        # print("ordered_nodes: {}".format(ordered_nodes))
-        iter_times = 1
         for node in ordered_nodes:
             # print("In dfs_loop - Value of visited: {}".format(visited))
             if not visited[node]:
                 s = node
-                # print("Going into dfs_inorder_iter for the {} time".format(iter_times))
                 dfs_inorder_iter(graph, node)
-                # print("Done with {} iteration(s) of dfs_inorder_iter".format(iter_times))
-                iter_times += 1
         return finishing_times, sccs
 
-    print("Reversing edges for first time...")
     reverse_edges(graph)
-    print("Beginning first iteration of dfs_loop...")
     finishing_times, disregard = dfs_loop(graph, list(graph))
-    print("Reversing edges for second time...")
     reverse_edges(graph)
-    print("Beginning second iteration of dfs_loop...")
     disregard, sccs = dfs_loop(graph, reversed(finishing_times))
     return [count for leader, count in sccs.most_common(5)]
-    # print(disregard)
-    # print(sccs)
