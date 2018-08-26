@@ -1,4 +1,7 @@
-"""Dijkstra's algorithm"""
+"""Dijkstra's algorithm using heap - runs in O(mlogn) time
+
+Work in progress
+"""
 
 
 import heapq as h
@@ -61,7 +64,7 @@ def dijkstra(graph, s):
     B = [[] for _ in range(len(graph))]
     visited = set([s])  # Nodes processed so far
     heap = []
-    
+
     # for neighbor in get_unvisited_neighbors(s):
     #     smallest_greedy = get_smallest_greedy(neighbor)
     #     if smallest_greedy:
