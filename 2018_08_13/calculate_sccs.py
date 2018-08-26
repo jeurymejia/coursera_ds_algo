@@ -68,7 +68,12 @@ def kosaraju(graph):
     def dfs_loop(graph, ordered_nodes):
 
         def dfs_inorder_iter(graph, start_node):
-            """Do iterative *in-order* DFS traversal of graph"""
+            """Do iterative traversal of graph
+
+            Important wrinkle: Calculates finishing times
+            as though traversal by simple recursive DFS algorithm
+            (child node visited before parent node)
+            """
             nonlocal t
 
             if visited[start_node]:
@@ -84,7 +89,8 @@ def kosaraju(graph):
                 nodes_in_stack.remove(node)
                 if not seen_once.get(node):
                     # It's our first time visiting the node,
-                    # so put it back on the stack
+                    # so put it back on the stack; we won't take
+                    # it off permanently until we're backtracking
                     stack.append(node)
                     nodes_in_stack.add(node)
                     seen_once[node] = True
@@ -109,7 +115,6 @@ def kosaraju(graph):
         t = 0  # Finishing time
         s = None  # Leader node
         for node in ordered_nodes:
-            # print("In dfs_loop - Value of visited: {}".format(visited))
             if not visited[node]:
                 s = node
                 dfs_inorder_iter(graph, node)
