@@ -106,3 +106,7 @@ venv.bak/
 # Assignment-specific files
 SCC.txt
 Median.txt
+two_sum_data.txt
+
+# C-related stuff
+*.out
