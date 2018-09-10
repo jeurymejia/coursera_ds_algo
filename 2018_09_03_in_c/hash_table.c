@@ -16,10 +16,13 @@ void htInsert(HashTable *self, signed long long int key) {
 
 int htLookup(HashTable *self, signed long long int key) {
   signed long int i;
-
+  int result;
   i = self->hash(self, key);
   if (self->buckets[i]) {
-    return self->buckets[i]->isInList(self->buckets[i], key);
+    result = self->buckets[i]->isInList(self->buckets[i], key);
+    if (result) {
+      return result;
+    }
   }
   return 0;
 }

@@ -1,23 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "linked_list.h"
+#include "test_helpers.h"
 
-
-int failCount;
-
-void assertEquals(int expr1, int expr2) {
-  if (expr1 == expr2) {
-    printf(".");
-  } else {
-    printf("X");
-    failCount++;
-  }
-}
 
 int main(void) {
   LinkedList *list;
 
-  failCount = 0;
   list = initializeLinkedList();
   list->insert(list, -5);
   list->insert(list, 7);

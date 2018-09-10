@@ -34,7 +34,6 @@ void traverseList(LinkedList *list){
 
   cur = list->head;
   while (cur) {
-    fprintf(stderr, "Saw %lld\n", cur->key);
     cur = cur->next;
   }
 }

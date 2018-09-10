@@ -1,25 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "hash_table.h"
+#include "test_helpers.h"
 
 #define DEFAULT_HT_ARRAY_SZ 2749991
 
 
-int failCount;
-
-void assertEquals(int expr1, int expr2) {
-  if (expr1 == expr2) {
-    printf(".");
-  } else {
-    printf("X");
-    failCount++;
-  }
-}
-
 int main(void) {
   HashTable *ht;
 
-  failCount = 0;
   ht = initializeHashTable(DEFAULT_HT_ARRAY_SZ);
   ht->insert(ht, -5);
   ht->insert(ht, 7);
