@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "linked_list.h"
 
-void insert(LinkedList *self, signed long long int key) {
+void llInsert(LinkedList *self, signed long long int key) {
   ListNode *new;
 
   new = malloc(sizeof(ListNode));
@@ -15,7 +15,7 @@ void insert(LinkedList *self, signed long long int key) {
   self->head = new;
 }
 
-int isInList(LinkedList *self, signed long long int key) {
+int llIsInList(LinkedList *self, signed long long int key) {
   ListNode *cur;
 
   cur = self->head;
@@ -34,7 +34,7 @@ void traverseList(LinkedList *list){
 
   cur = list->head;
   while (cur) {
-    fprintf(stderr, "Saw %d\n", cur->key);
+    fprintf(stderr, "Saw %lld\n", cur->key);
     cur = cur->next;
   }
 }
@@ -42,6 +42,7 @@ void traverseList(LinkedList *list){
 LinkedList *initializeLinkedList(void) {
   LinkedList *list = malloc(sizeof(LinkedList));
   list->head = NULL;
-  list->insert = insert;
-  list->isInList = isInList;
+  list->insert = llInsert;
+  list->isInList = llIsInList;
+  return list;
 }

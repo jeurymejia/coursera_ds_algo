@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "linked_list.h"
 
+
 int failCount;
 
 void assertEquals(int expr1, int expr2) {
