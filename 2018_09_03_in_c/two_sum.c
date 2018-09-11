@@ -7,7 +7,8 @@
 #define MAX_NUMBERS_IN_FILE 1000000
 
 
-int two_sum(HashTable *ht, signed long long int *numbers, int numlen, int t) {
+int two_sum(HashTable *ht, signed long long int *numbers,
+            int numlen, int t) {
   /* 2-sum algorithm
    *
    * Given a set of integers ints and an integer t, return True if
@@ -21,7 +22,7 @@ int two_sum(HashTable *ht, signed long long int *numbers, int numlen, int t) {
     y = t - x;
     if (x != y) {
       if (ht->lookup(ht, y)) {
-        printf("SUCC: x=%lld, y=%lld\n", x, y);
+        printf("Found two-sum for %d (x=%lld, y=%lld)\n", t, x, y);
         return 1;
       }
     }
@@ -49,7 +50,6 @@ int two_sum_wrapper(const char *filename, signed long int t_low_bnd,
   unsigned int successes = 0;
   for (i=t_low_bnd; i<t_up_bnd+1; i++) {
     if (two_sum(ht, numbers, lineCount, i)) {
-      fprintf(stderr, "Found two-sum for %d\n", i);
       successes++;
     } else {
       fprintf(stderr, "Couldn't find two-sum for %d\n", i);

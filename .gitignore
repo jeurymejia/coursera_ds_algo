@@ -110,3 +110,4 @@ two_sum_data.txt
 
 # C-related stuff
 *.out
+*.o
