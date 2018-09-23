@@ -4,8 +4,9 @@
 class Heap(object):
     """A Min Heap"""
 
-    def __init__(self, input_list=None):
+    def __init__(self, input_list=None, key=lambda x: x):
         self.a = [] if input_list is None else input_list
+        self.key = key
         self.build_heap()
 
     def __repr__(self):
@@ -47,7 +48,7 @@ class Heap(object):
     def _sift_up(self, i):
         parent_i = (i - 1) // 2
         if parent_i >= 0:
-            if self.a[parent_i] > self.a[i]:
+            if self.key(self.a[parent_i]) > self.key(self.a[i]):
                 self.a[parent_i], self.a[i] = self.a[i], self.a[parent_i]
                 self._sift_up(parent_i)
 
@@ -58,11 +59,14 @@ class Heap(object):
             # The element at index i has at least a left child
             if rc_i <= self._last_i:
                 # The element at index i has two children
-                small_c_i = lc_i if self.a[lc_i] < self.a[rc_i] else rc_i
+                if self.key(self.a[lc_i]) < self.key(self.a[rc_i]):
+                    small_c_i = lc_i
+                else:
+                    small_c_i = rc_i
             else:
                 # Since there's only a left child, it's the smallest child
                 small_c_i = lc_i
-            if self.a[i] > self.a[small_c_i]:
+            if self.key(self.a[i]) > self.key(self.a[small_c_i]):
                 self.a[small_c_i], self.a[i] = self.a[i], self.a[small_c_i]
                 self._sift_down(small_c_i)
 
@@ -80,20 +84,16 @@ class MaxHeap(Heap):
     Keys are also multiplied by -1 on extraction
     """
 
-    def __init__(self, input_list=None):
-        self.a = [] if input_list is None else [-1 * x for x in input_list]
+    def __init__(self, input_list=None, key=lambda x: x):
+        self.a = [] if input_list is None else input_list
+        self.key = lambda x: key(x) * -1
         self.build_heap()
 
-    def insert(self, val):
-        self.a.append(val * -1)
-        new_i = self._last_i
-        self._sift_up(new_i)
-
     def extract_max(self):
-        return (self.extract_min() * -1)
+        return self.extract_min()
 
     def peek_max(self):
         try:
-            return self.a[0] * -1
+            return self.a[0]
         except IndexError:
             return None

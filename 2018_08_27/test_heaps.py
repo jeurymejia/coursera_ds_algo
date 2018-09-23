@@ -76,3 +76,12 @@ class TestHeap(unittest.TestCase):
         for i in reversed(range(len(input))):
             self.assertEqual(h.peek_max(), sorted_input[i])
             self.assertEqual(h.extract_max(), sorted_input[i])
+
+    def TestMinHeapWithTuples(self):
+        input = [(random.randrange(100), "Hullo!") for _ in range(100)]
+        h = Heap(key=lambda x: x[0])
+        for num in input:
+            h.insert(num)
+        sorted_input = sorted(input)
+        for i in range(len(input)):
+            self.assertEqual(h.extract_min(), sorted_input[i])
