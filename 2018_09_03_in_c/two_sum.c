@@ -30,9 +30,8 @@ int two_sum(HashTable *ht, signed long long int *numbers,
   return 0;
 }
 
-int two_sum_wrapper(const char *filename, signed long int t_low_bnd,
+int two_sum_wrapper(FILE *fp, signed long int t_low_bnd,
                     signed long int t_up_bnd) {
-  FILE *fp = fopen(filename, "r");
   signed long long int numbers[MAX_NUMBERS_IN_FILE];
   signed long long int n = 0;
   int i = 0;

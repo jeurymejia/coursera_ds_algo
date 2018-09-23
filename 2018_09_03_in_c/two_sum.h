@@ -3,7 +3,7 @@
 
 int two_sum(HashTable *ht, signed long long int *numbers, int numlen, int t);
 
-int two_sum_wrapper(const char *filename, signed long int t_low_bnd,
+int two_sum_wrapper(FILE *fp, signed long int t_low_bnd,
                     signed long int t_up_bnd);
 
 #endif // TWO_SUM_

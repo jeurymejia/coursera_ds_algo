@@ -9,8 +9,10 @@
 
 
 int main(void) {
-  assertEquals(two_sum_wrapper("test_case_1.txt", 3, 10), 8);
-  assertEquals(two_sum_wrapper("test_case_2.txt", 0, 4), 2);
+  FILE *fp = fopen("test_case_1.txt", "r");
+  assertEquals(two_sum_wrapper(fp, 3, 10), 8);
+  fp = fopen("test_case_2.txt", "r");
+  assertEquals(two_sum_wrapper(fp, 0, 4), 2);
   if (failCount) {
     printf("\n%d test(s) failed\n", failCount);
   } else {

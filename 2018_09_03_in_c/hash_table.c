@@ -43,4 +43,5 @@ HashTable *initializeHashTable(unsigned long int arrSize) {
   ht->insert = htInsert;
   ht->lookup = htLookup;
   ht->hash = htHash;
+  return ht;
 }
