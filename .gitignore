@@ -103,10 +103,12 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# Assignment-specific files
+# Assignment-specific data files
 SCC.txt
 Median.txt
 two_sum_data.txt
+jobs.txt
+edges.txt
 
 # C-related stuff
 *.out
