@@ -42,6 +42,7 @@ class NodeHeap(object):
             leaf = self.a.pop()
             try:
                 self.a[0] = leaf
+                self.m[leaf.label] = 0
             except IndexError:
                 # leaf was last element in the heap
                 return leaf
