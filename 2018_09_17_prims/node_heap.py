@@ -2,16 +2,23 @@ import copy
 
 
 class NodeHeap(object):
-    """A Min Heap that supports deletions"""
+    """A Min Heap that supports deletions
 
-    def __init__(self, input_list=None):
+    Attributes:
+        a: The underlying array containing the nodes in the heap
+        m: Mapping between node labels and their position within the array
+        key: Function to be called on heap elements to determine
+            comparative order
+
+    """
+
+    def __init__(self, input_list=None, key=lambda node: node.min_cost_edge):
         self.a = [] if input_list is None else copy.copy(input_list)
         if self.a:
-            # Mapping of node labels to node positions in array
             self.m = {node.label: i for i, node in enumerate(self.a)}
         else:
             self.m = {}
-        self.key = lambda node: node.min_cost_edge
+        self.key = key
         self.build_heap()
 
     def __repr__(self):
@@ -78,6 +85,14 @@ class NodeHeap(object):
                 self._sift_up(index)
         return deleted_node
 
+    @property
+    def size(self):
+        return len(self.a)
+
+    @property
+    def _last_i(self):
+        return self.size - 1
+
     def _sift_up(self, i):
         parent_i = (i - 1) // 2
         if parent_i >= 0:
@@ -112,11 +127,3 @@ class NodeHeap(object):
                 # Update array
                 self.a[small_c_i], self.a[i] = self.a[i], self.a[small_c_i]
                 self._sift_down(small_c_i)
-
-    @property
-    def size(self):
-        return len(self.a)
-
-    @property
-    def _last_i(self):
-        return self.size - 1

@@ -12,14 +12,16 @@ Script expects a file formatted as follows:
 """
 
 import argparse
+import math
+
 from node_heap import NodeHeap
 
 
 class Node(object):
-    def __init__(self, label, edges, min_cost_edge=10000000):
+    def __init__(self, label, edges, min_cost_edge=math.inf):
         self.label = label
         self.edges = set(edges)  # A set of edge IDs
-        self.min_cost_edge = min_cost_edge
+        self.min_cost_edge = min_cost_edge  # Initially infinitely large
         self.min_cost_edge_id = None
 
     def __repr__(self):
@@ -40,7 +42,7 @@ class Edge(object):
         return ("Edge({}<->{}, weight={})"
                 .format(self.node1, self.node2, self.weight))
 
-    def is_frontier(self, visited, unvisited):
+    def is_frontier(self, visited):
         """Whether the edge crosses from a visited to unvisited node"""
         visited_nodes = 0
         if self.node1 in visited:
@@ -67,9 +69,8 @@ def prims_mst(edges):
         edges_objs = [
             edge
             for edge in edges_objs
-            if edge.is_frontier(visited, unvisited)
+            if edge.is_frontier(visited)
         ]
-        # print(edges_objs)
         updated_neighbors = []
         for edge in edges_objs:
             for node_id in edge.node1, edge.node2:
@@ -79,13 +80,11 @@ def prims_mst(edges):
                         frontier_neighbor.min_cost_edge = edge.weight
                         frontier_neighbor.min_cost_edge_id = edge.label
                         updated_neighbors.append(frontier_neighbor)
-        # print([node.label for node in updated_neighbors])
         for neighbor in updated_neighbors:
             heap.delete(neighbor.label)
             heap.insert(neighbor)
 
     visited = set()  # Stores node labels
-    unvisited = set()  # Stores node labels
     nodes = {}
     # Initialize nodes with initial min_cost_edge values
     for edge_id, edge in enumerate(edges):
@@ -93,10 +92,6 @@ def prims_mst(edges):
             if not visited:
                 # Add the first node_id to visited set
                 visited.add(node_id)
-            elif node_id not in visited:
-                # Don't add the visited node to unvisited the
-                # second time we see it
-                unvisited.add(node_id)
 
             if node_id not in nodes:
                 # Must instantiate node
@@ -107,21 +102,24 @@ def prims_mst(edges):
 
             # If the edge is a frontier edge and has weight lower than
             # the node's min_cost_edge, update the min_cost_edge
-            if edge.is_frontier(visited, unvisited):
+            if edge.is_frontier(visited):
                 if edge.weight < nodes[node_id].min_cost_edge:
                     nodes[node_id].min_cost_edge = edge.weight
                     nodes[node_id].min_cost_edge_id = edge.label
 
     # Initialize heap
-    heap = NodeHeap([nodes[node_id] for node_id in unvisited])
+    heap = NodeHeap([
+        node
+        for node_id, node in nodes.items()
+        if node_id not in visited
+    ])
 
     # Main loop -- iterate over unvisited edges
     mst = []
-    while unvisited:
+    while len(visited) < len(nodes):
         newly_visited = heap.extract_min()
         mst.append(edges[newly_visited.min_cost_edge_id])
         visited.add(newly_visited.label)
-        unvisited.remove(newly_visited.label)
         update_frontier_neighbors(newly_visited)
     return mst
 
@@ -131,7 +129,7 @@ def main(filename):
         file.readline()  # Discard first header line
         lines = file.readlines()
     edges = [
-        Edge(*tuple(int(element) for element in [id] + line.split()))
+        Edge(*(int(element) for element in [id] + line.split()))
         for id, line in enumerate(lines)
     ]
     mst = prims_mst(edges)
