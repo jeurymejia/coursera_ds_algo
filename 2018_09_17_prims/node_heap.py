@@ -6,7 +6,7 @@ class NodeHeap(object):
 
     Attributes:
         a: The underlying array containing the nodes in the heap
-        m: Mapping between node labels and their position within the array
+        m: Mapping between node labels and their indicies within self.a.
         key: Function to be called on heap elements to determine
             comparative order
 

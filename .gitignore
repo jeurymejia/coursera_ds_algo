@@ -109,6 +109,8 @@ Median.txt
 two_sum_data.txt
 jobs.txt
 edges.txt
+clustering1.txt
+clustering_big.txt
 
 # C-related stuff
 *.out
